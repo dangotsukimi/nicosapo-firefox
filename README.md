@@ -1,59 +1,39 @@
-# nicosapo
+# nicosapo-firefox
 
-Google Chrome Extension build with React for extending NicoNico Live.
+この拡張機能は、Chrome向けに公開されていたニコニコ生放送用拡張機能「ニコサポ (nicosapo)」からフォークして作成されたものです。現在のニコニコ生放送の仕様（コミュニティ機能の廃止、チャンネル・ユーザー生放送への移行）に合わせて一から再構築し、Firefox専用の拡張機能として実装し直しました。
 
-## Install
+## 概要
 
-[Chrome WebStore](https://chrome.google.com/webstore/detail/%E3%83%8B%E3%82%B3%E7%94%9F%E3%83%81%E3%82%A7%E3%83%83%E3%82%AB%E3%83%BC/kfnogdokhemdbbclknmmjpcnmjmpjknc)
+指定したチャンネルやユーザーがニコニコ生放送を開始した際に、自動で検知してブラウザの新しいタブで放送ページを開くFirefox拡張機能です。
 
-## Feature
+## 主な機能
 
-1. Popup list of programs
-1. Automatic redirect
-1. Automatic entry
-1. Automatic scroll
-1. Search programs
-1. Notification bar
-    * Show remaining time
-    * Show end time
-    * Notify extension
+* **自動入場機能**: 登録しておいた「ユーザーID（数字）」や「チャンネルID」の生放送が始まると自動的に新しいタブで開きます。
+* **チャンネル・ユーザー両対応**: 現在のニコニコ生放送の仕様に完全対応しており、ユーザー生放送とチャンネル生放送のどちらでも正確に検知可能です。URLを直接入力して追加することもできます。
+* **通知機能**: 自動入場と同時にデスクトップ通知を表示してお知らせします（設定でオン/オフ可能）。
+* **シンプルな設定画面**: 追加したチャンネルやユーザーのアイコン・名前が一覧表示され、管理が簡単です。
 
-## Demo
+## インストール方法（開発者モード）
 
-<img alt="nicosapo" src="./src/video/demo.gif" width='542px'>
+1. このリポジトリをダウンロード（または `git clone`）し、任意のフォルダに解凍します。
+2. Firefoxを開き、アドレスバーに `about:debugging` と入力して移動します。
+3. 左側のメニューから「この Firefox」を選択します。
+4. 「一時的な拡張機能を読み込む」ボタンをクリックします。
+5. ダウンロードしたフォルダの中にある `manifest.json` ファイルを選択して開きます。
+6. インストールが完了し、ツールバーに拡張機能のアイコンが表示されます。
 
-## Build
+## 使い方
 
-Release:
+1. Firefoxのツールバーにある本拡張機能のアイコンをクリックすると、設定画面が開きます。
+2. 追加したいニコニコ生放送の「ユーザーID（数字）」、「チャンネル（chから始まるIDなど）」、または「ユーザー/チャンネルのトップページURL」を入力し、「追加」ボタンをクリックします。
+3. 追加されたチャンネル/ユーザーは一覧に表示され、バックグラウンドで約30秒ごとに放送状況が自動でチェックされるようになります。
 
-```
-npm run release
-```
+## 元プロジェクトについて
 
-Build:
+本プロジェクトは以下の拡張機能をベース（フォーク元）としてインスパイアを受け、現在の環境向けに新しく開発されました。
+* オリジナルプロジェクト: nicosapo
+* 注意: フォーク元のコード（React等）から脱却し、軽量なピュアJavaScript/HTML/CSSで再実装しています。
 
-```
-npm run build
-```
+## ライセンス
 
-Watch:
-
-```
-npm run watch
-```
-
-## Donate
-
-This application is developed by the user's offer. Please cooperate if you can charge for this extended function. Amazon gift certificates are also welcome.
-
-<a href="http://amzn.asia/7MmmuAz" target="_blank">Amazon Wishlist: Book</a>
-
-<a href="http://amzn.asia/38NVAwa" target="_blank">Amazon Wishlist: Sundries</a>
-
-## Licence
-
-MIT
-
-## Author
-
-<a href="https://twitter.com/yurafuca" target="_blank">@yurafuca</a>
+本プロジェクトはフォーク元のライセンスに準じます。詳細は元のリポジトリをご確認ください。

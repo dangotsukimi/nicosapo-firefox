@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ニコ生自動入場 設定</title>
+  <style>
+    body {
+      color: #24292e;
+      margin: 0;
+      font-family: "Noto Sans Japanese", "Lucida Grande", "segoe UI", "ヒラギノ丸ゴ ProN W4", "Hiragino Maru Gothic ProN", Meiryo, Arial, sans-serif;
+      background-color: #fff;
+    }
+    .content { margin: 20px auto 0; width: 1000px; display: flex; justify-content: space-between; }
+    .sidebar { width: 250px; }
+    .main { width: 700px; }
+    
+    .wrapper.menu {
+      border-radius: 2px; border: solid 1px #d8d8d8; margin-bottom: 20px;
+    }
+    .wrapper h1.appicon {
+      font-size: 20px; padding: 0 10px 4px 10px; border-bottom: 1px solid #d8d8d8; background: transparent; line-height: 38px; font-weight: 400; margin: 0 0 20px 0; color: #24292e;
+    }
+    .wrapper.menu h1.appicon {
+      font-size: 13px; font-weight: 500; background-color: #f3f5f8; border-bottom: 1px solid #d8d8d8; padding: 0 10px; line-height: 38px; margin: 0; color: #586069;
+    }
+    .wrapper.menu .item {
+      position: relative; color: #0366d6; font-size: 13px; line-height: 34px; padding-left: 10px; border-bottom: solid 1px #eee; cursor: pointer;
+    }
+    .wrapper.menu .item:hover { background-color: #f9f9f9; }
+    .wrapper.menu .item.selected { font-weight: bold; color: #24292e; }
+    .wrapper.menu .item.selected::before {
+      position: absolute; top: 0; bottom: 0; left: 0; width: 2px; content: ""; background-color: #e36209;
+    }
+    .wrapper.menu .item:last-child { border-bottom: none; }
+    
+    .items { margin-left: 10px; margin-bottom: 30px; }
+    .item-section { margin-bottom: 25px; }
+    .item-section h3 { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+    .item-section label { margin-right: 15px; font-size: 14px; cursor: pointer; }
+    
+    input[type="text"] {
+      padding: 6px 8px; border: 1px solid #d1d5da; border-radius: 3px; width: 300px; outline: none; margin-right: 10px; font-size: 14px;
+    }
+    .btn-primary {
+      color: #fff; background-color: #28a745; background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%); border: 1px solid rgba(27,31,35,0.2); border-radius: 3px; padding: 6px 12px; font-size: 14px; font-weight: 600; cursor: pointer; vertical-align: middle;
+    }
+    .btn-primary:hover {
+      background-color: #269f42; background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
+    }
+
+    ul.listgroup {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .listgroup-item {
+      padding: 10px; font-size: 14px; line-height: 20px; color: #24292e; border-bottom: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: center;
+    }
+    .community-info {
+      display: flex; align-items: center;
+    }
+    .community-info img {
+      width: 48px; height: 48px; border-radius: 3px; margin-right: 15px; object-fit: cover; border: 1px solid #eee;
+    }
+    .community-title {
+      display: block; font-weight: bold; color: #24292e; font-size: 14px;
+    }
+    .community-id {
+      display: block; font-size: 12px; color: #586069; margin-top: 2px;
+    }
+    .btn-danger {
+      color: #cb2431; background-color: #fafbfc; background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%); border: 1px solid rgba(27,31,35,0.2); border-radius: 3px; padding: 3px 10px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-danger:hover {
+      color: #fff; background-color: #cb2431; background-image: linear-gradient(-180deg, #de4450 0%, #cb2431 90%); border-color: rgba(27,31,35,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="sidebar">
+      <div class="wrapper menu">
+        <h1 class="appicon">設定</h1>
+        <div class="item selected">
+          自動入場設定
+        </div>
+      </div>
+    </div>
+    
+    <div class="main wrapper">
+      <div id="settings-content">
+        <h1 class="appicon">自動枠移動・自動入場</h1>
+        <div class="items">
+          <div class="item-section">
+            <h3>自動入場を有効にする</h3>
+            <label><input type="radio" name="autoEnterEnable" value="true"> 有効</label>
+            <label><input type="radio" name="autoEnterEnable" value="false"> 無効</label>
+          </div>
+        </div>
+
+        <h1 class="appicon">通知</h1>
+        <div class="items">
+          <div class="item-section">
+            <h3>通知を放送開始時に表示する</h3>
+            <label><input type="radio" name="notificationEnable" value="true"> 有効</label>
+            <label><input type="radio" name="notificationEnable" value="false"> 無効</label>
+          </div>
+        </div>
+
+        <h1 class="appicon">自動入場が有効になっているチャンネル・ユーザー</h1>
+        <div class="items">
+          <div class="item-section">
+            <input type="text" id="community-id" placeholder="例: URL (https://ch...) または ID">
+            <button id="add-btn" class="btn-primary">追加</button>
+          </div>
+          <ul id="community-list" class="listgroup"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
