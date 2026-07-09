@@ -42,13 +42,29 @@ async function checkStreams() {
       let programId = null;
 
       if (!/^\d+$/.test(communityId)) {
-        // 1a. Channel - use internal social_group API (relies on browser cookies for access)
+        // 1a. Channel - scrape channel page
         try {
-          const latestProgramResponse = await fetch(`https://live2.nicovideo.jp/unama/tool/v1/broadcasters/social_group/${communityId}/program`);
-          if (latestProgramResponse.ok) {
-            const latestProgramData = await latestProgramResponse.json();
-            if (latestProgramData.meta && latestProgramData.meta.status === 200 && latestProgramData.data.nicoliveProgramId) {
-              programId = latestProgramData.data.nicoliveProgramId;
+          const chRes = await fetch(`https://ch.nicovideo.jp/${communityId}`);
+          if (chRes.ok) {
+            const html = await chRes.text();
+            
+            // Look for a timeshift button or live thumbnail that indicates 'onair'
+            const onAirRegex1 = /data-live_id="(\d+)"[^>]*data-live_status="onair"/;
+            const onAirRegex2 = /data-live_status="onair"[^>]*data-live_id="(\d+)"/;
+            const match1 = html.match(onAirRegex1);
+            const match2 = html.match(onAirRegex2);
+            
+            if (match1) {
+              programId = "lv" + match1[1];
+            } else if (match2) {
+              programId = "lv" + match2[1];
+            } else {
+              // Sometimes they use class="thumb_live_onair"
+              const thumbRegex = /<a href="https:\/\/live\.nicovideo\.jp\/watch\/(lv\d+)"[^>]*class="[^"]*thumb_live_onair/i;
+              const thumbMatch = html.match(thumbRegex);
+              if (thumbMatch) {
+                programId = thumbMatch[1];
+              }
             }
           }
         } catch(e) {
@@ -105,13 +121,24 @@ async function checkStreams() {
         continue;
       }
 
-      // 2. Get program status
-      const programStatusResponse = await fetch(`https://live2.nicovideo.jp/unama/watch/${programId}/programinfo`);
-      const programStatusData = await programStatusResponse.json();
+      // 2. Get program status (optional, for title)
+      let title = "放送";
+      let isOnAir = true; // We assume it's on-air since we found it in step 1
+      try {
+        const programStatusResponse = await fetch(`https://live2.nicovideo.jp/unama/watch/${programId}/programinfo`);
+        if (programStatusResponse.ok) {
+          const programStatusData = await programStatusResponse.json();
+          if (programStatusData.meta && programStatusData.meta.status === 200) {
+            // Strictly check if the API also says it's onAir, just in case
+            isOnAir = programStatusData.data.status === "onAir";
+            title = programStatusData.data.title || "放送";
+          }
+        }
+      } catch (e) {
+        // Ignore API error
+      }
 
-      if (programStatusData.meta.status === 200 && programStatusData.data.status === "onAir") {
-        const title = programStatusData.data.title || "放送";
-
+      if (isOnAir) {
         // Create a notification if enabled
         if (isNotificationEnabled) {
           browser.notifications.create({
