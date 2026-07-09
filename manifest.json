@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "ニコ生自動入場 (Auto Enter)",
-  "version": "1.0",
+  "version": "1.1",
   "description": "ニコニコ生放送の特定のコミュニティ・チャンネルの生放送が始まったら、自動的にブラウザで開きます。",
   "permissions": [
     "storage",
